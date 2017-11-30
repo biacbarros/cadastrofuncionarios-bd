@@ -1,0 +1,81 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="LayoutPadrao">
+<head>
+<meta charset="utf8">
+<title>Cadastro de novo cargo</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="container-fluid">
+		<form method="POST" action="/cargos" th:object="${cargo}">
+			<div class="card">
+				<div class="card-header clearfix">
+					<h5 class="pull-left">Cadastro de cargo</h5>
+					<a class="pull-right" href="/funcionarios/novo">Voltar para
+						Cadastro de Funcionários</a>
+				</div>
+				<div class="card-block">
+					<div class="form-group row">
+						<label for="codigointerno" class="form-control-label col-sm-2">Nome do novo cargo</label>
+						<div class="col-sm-8">
+							<input type="text" class="form-control" id="descricao"
+								th:field="*{descricao}">
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="form-control-label col-sm-2"></label>
+						<div class="col-sm-8">
+							<button type="submit" class="btn btn-primary" value="salvar">Salvar</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+	</div>
+<div class="card-block">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th class="text-center">Nome do Cargo</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="cargo : ${cargos}">
+							<td class="text-center" th:text="${{cargo.descricao}}"></td>
+							<td class="text-center">
+								<a th:href="@{/cargos/{id}(id=${cargo.id})}">
+								</a>
+								<a data-toggle="modal" data-target="#confirmacaoExclusaoModal" 
+								th:attr="data-id=${cargo.id}, data-nome=${cargo.descricao}" class="fa fa-trash"></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		<div class="modal fade" id="confirmacaoExclusaoModal" tabindex="-1">
+			<div class="modal-dialog">
+				<form th:attr="data-url-base='/cargos'" method="POST">
+					<input type = "hidden" name = "_method" value = "DELETE">
+					
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5>Tem certeza?</h5>
+						</div>
+						<div class="modal-body">
+							<span>Tem certeza que quer excluir o cargo?</span>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Excluir</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+</section>
+</html>

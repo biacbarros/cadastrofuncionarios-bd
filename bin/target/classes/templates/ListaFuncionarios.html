@@ -1,0 +1,70 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorator="LayoutPadrao">
+<head>
+	<meta charset="utf8">
+	<title>Lista de Funcionários</title>
+</head>
+
+<section layout:fragment="conteudo">
+
+	<div class="container-fluid">
+		<div class="card">
+			<div class="card-header clearfix">
+				<h5 class="pull-left">Cadastro do Funcionário</h5>
+				<a class="pull-right" href="/funcionarios/novo">Cadastrar Novo</a>
+			</div>
+
+			<div class="card-block">
+				<table class="table table-bordered table-striped">
+					<thead>
+						<tr>
+							<th>Funcionário</th>
+							<th class="text-center">Admissão</th>
+							<th class="text-center">Status</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="funcionario : ${funcionarios}">
+							<td th:text="${funcionario.nome}"></td>
+							<td class="text-center" th:text="${{funcionario.admissao}}"></td>
+							<td class="text-center" th:text="${funcionario.statusFuncionario.descricao}"></td>
+							<td class="text-center">
+								<a th:href="@{/funcionarios/{id}(id=${funcionario.id})}">
+									<i class="fa fa-pencil" style="padding-right: 7px"></i>
+								</a>
+								<a data-toggle="modal" data-target="#confirmacaoExclusaoModal" 
+								th:attr="data-id=${funcionario.id}, data-nome=${funcionario.nome}" class="fa fa-trash"></a>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+
+		<div class="modal fade" id="confirmacaoExclusaoModal" tabindex="-1">
+			<div class="modal-dialog">
+				<form th:attr="data-url-base='/funcionarios'" method="POST">
+					<input type = "hidden" name = "_method" value = "DELETE">
+					
+					<div class="modal-content">
+						<div class="modal-header">
+							<h5>Tem certeza?</h5>
+						</div>
+						<div class="modal-body">
+							<span>Tem certeza que quer excluir o funcionário?</span>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-link" data-dismiss="modal">Cancelar</button>
+							<button type="submit" class="btn btn-primary">Excluir</button>
+						</div>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
+
+</html>
